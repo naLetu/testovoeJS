@@ -1,0 +1,19 @@
+.pageSignIn p {
+  margin-bottom: 80px;
+}
+
+label .signInPassword {
+  margin-bottom: 8px;
+}
+
+.forgetPasswordLink {
+  color: #7c8ba0;
+  font-size: 12px;
+  font-weight: 400;
+  margin-left: 225px;
+  cursor: pointer;
+}
+
+.signInForm {
+  margin-bottom: 80px;
+}

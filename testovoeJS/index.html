@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <title>Document</title>
+    <link rel="stylesheet" href="/assets/style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- страница регистрации -->
+      <div class="pageSignUp" style="display: block">
+        <div class="logoSignUp">
+          <img src="/images/signUpLogo.svg" alt="" />
+        </div>
+        <h1>Sign Up</h1>
+        <p class="textWithHeader">
+          It was popularised in the 1960s with the release of Letraset
+          sheetscontaining Lorem Ipsum.
+        </p>
+        <form action="" class="signUpForm">
+          <label for="userName">
+            <input id="userName" type="text" placeholder="Name" />
+          </label>
+          <label for="emailOrPhone">
+            <input
+              id="emailOrPhone"
+              type="text"
+              placeholder="Email/Phone Number"
+            />
+          </label>
+          <label for="passwordField">
+            <input id="passwordField" type="password" placeholder="Password" />
+            <a href="#" class="passwordControl"></a>
+          </label>
+          <div class="agreement">
+            <label>
+              <input class="agreementFlag" type="checkbox" />
+              <p class="agree">
+                I’m agree to
+                <a src="#">The Tarms of Service</a> and
+                <a src="#">Privasy Policy</a>
+              </p>
+            </label>
+          </div>
+        </form>
+
+        <button class="CreateAccountBtn">Creat Account</button>
+        <div class="textUnderButton">
+          <p>Do you have account? <a onclick="showSignIn()">Sign In</a></p>
+        </div>
+      </div>
+
+      <!-- страница входа -->
+      <div class="pageSignIn" style="display: none">
+        <div class="logoSignIn">
+          <img src="/images/Wave.svg" alt="logoSignIn" />
+        </div>
+        <h1>Sign In</h1>
+        <p class="textWithHeader">
+          It was popularised in the 1960s with the release of Letraset
+          sheetscontaining Lorem Ipsum.
+        </p>
+        <form class="signInForm" action="">
+          <label for="emailField">
+            <input
+              id="emailField"
+              type="text"
+              placeholder="Email/Phone Number"
+            />
+          </label>
+          <label for="passwordField">
+            <input
+              id="passwordField"
+              type="password"
+              placeholder="Password"
+              class="signInPassword"
+            />
+            <a href="#" class="passwordControl"></a>
+          </label>
+          <a class="forgetPasswordLink" src="#">Forget Password?</a>
+        </form>
+
+        <button class="logInBtn">Log In</button>
+        <p class="textUnderButton">
+          Don’t have account? <a onclick="showSignUp()">Sign Up</a>
+        </p>
+      </div>
+
+      <!-- страница восстановления пароля -->
+      <div class="forgetPassword" style="display: none">
+        <div class="arrowToBack">
+          <a><img src="/images/arrToBack.svg" alt="" /></a>
+        </div>
+        <div class="sliderButton">
+          <div class="forgetPage"></div>
+          <div class="enterPage"></div>
+          <div class="resetPage"></div>
+        </div>
+        <div class="logoForgetPassword">
+          <img src="/images/forgetLogo.svg" alt="" />
+        </div>
+        <h1>Forget Password</h1>
+        <p class="textWithHeader">
+          It was popularised in the 1960s with the release of Letraset
+          sheetscontaining Lorem Ipsum.
+        </p>
+        <input type="text" placeholder="Email I’D/ Mobile Number" />
+        <button>Continue</button>
+      </div>
+
+      <!-- страница с воодом кода -->
+
+      <div class="enterOTPPage" style="display: none">
+        <div class="arrowToBack">
+          <a><img src="/images/arrToBack.svg" alt="" /></a>
+        </div>
+        <div class="sliderButton">
+          <div class="forgetPage"></div>
+          <div class="enterPage"></div>
+          <div class="resetPage"></div>
+        </div>
+        <div class="logoForgetPassword">
+          <img src="/images/forgetLogo.svg" alt="" />
+        </div>
+        <h1>Enter OTP</h1>
+        <p class="textWithHeader">
+          Enter the OTP code we just sent <br />you on your registered
+          Email/Phone number
+        </p>
+        <div class="code">
+          <div class="boxCode numOne"></div>
+          <div class="boxCode numTwo"></div>
+          <div class="boxCode numThree"></div>
+          <div class="boxCode numFour"></div>
+          <div class="boxCode numFive"></div>
+        </div>
+        <button>Reset Password</button>
+        <div class="textUnderButton">
+          <p>Didn’t get OTP? <a>Resend OTP</a></p>
+        </div>
+      </div>
+
+      <!-- страница замены пароля -->
+
+      <div class="resetPassword" style="display: none">
+        <div class="arrowToBack">
+          <a><img src="/images/arrToBack.svg" alt="" /></a>
+        </div>
+        <div class="sliderButton">
+          <div class="forgetPage"></div>
+          <div class="enterPage"></div>
+          <div class="resetPage"></div>
+        </div>
+        <div class="logoReset">
+          <img src="/images/resetLogo.svg" alt="logo reset" />
+        </div>
+        <h1>Reset Password</h1>
+        <p class="textWithHeader">
+          It was popularised in the 1960s with the release of Letraset
+          sheetscontaining Lorem Ipsum.
+        </p>
+        <form class="resetForm" action="">
+          <label for="passwordField">
+            <input
+              id="passwordField"
+              type="password"
+              placeholder="New Password"
+            />
+            <a href="#" class="passwordControl"></a>
+          </label>
+          <label for="passwordField">
+            <input
+              id="passwordField"
+              type="password"
+              placeholder="Repeat Password"
+              class="signInPassword"
+            />
+            <a href="#" class="passwordControl"></a>
+          </label>
+        </form>
+        <button>
+          <img class="loadBtn" src="/images/loadBtn.svg" />Submitting...
+        </button>
+      </div>
+
+      <!-- финалОчка -->
+      <div class="success" style="display: none">
+        <img src="/images/lastPageLogo.svg" alt="" />
+        <div class="head">
+          <h1>Success!</h1>
+          <img src="/images/Ok.svg" alt="" />
+        </div>
+        <p>
+          Aenean eu lacinia ligula. Quisque eu risus erat. Aenean placerat
+          sollicitudin lectus.
+        </p>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>

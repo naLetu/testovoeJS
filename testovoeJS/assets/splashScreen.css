@@ -1,0 +1,24 @@
+.success img {
+  margin: 80px 23px;
+}
+
+.success h1 {
+  color: #3a9c4c;
+  margin-bottom: 5px;
+}
+
+.head {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+}
+
+.head img {
+  margin: 0;
+}
+
+.success p {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 400;
+}

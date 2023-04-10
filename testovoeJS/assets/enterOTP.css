@@ -1,0 +1,16 @@
+.code {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.boxCode {
+  width: 56px;
+  height: 70px;
+  background-color: #f5f9fe;
+  border-radius: 12px;
+}
+
+.enterOTPPage .textWithHeader {
+  text-align: center;
+}

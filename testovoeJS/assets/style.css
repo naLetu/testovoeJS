@@ -1,0 +1,52 @@
+@import url("/assets/signUp.css");
+@import url("/assets/signIn.css");
+@import url("/assets/forgetPassword.css");
+@import url("/assets/enterOTP.css");
+@import url('/assets/resetPassword.css');
+@import url('/assets/splashScreen.css');
+
+body {
+  margin: 0;
+  font-family: "Poppins", sans-serif;
+  width: 100%;
+  color: #3b4054;
+  font-size: 14px;
+}
+
+* {
+  margin: 0;
+}
+
+.container {
+  max-width: 393px;
+  padding: 0 24px;
+  margin: 0 auto;
+}
+
+a {
+  color: #3461fd;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+button {
+  color: #ffffff;
+  background-color: #3461fd;
+  border: none;
+  padding: 18px 114px;
+  margin-bottom: 16px;
+  font-size: 16px;
+  line-height: 24px;
+  border-radius: 14px;
+  width: 345px;
+  cursor: pointer;
+}
+
+h1 {
+  font-size: 32px;
+  color: #2a4eca;
+  line-height: 40px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 16px;
+}
