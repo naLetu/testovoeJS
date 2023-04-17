@@ -17,3 +17,7 @@ label .signInPassword {
 .signInForm {
   margin-bottom: 80px;
 }
+
+.signInInput{
+  background-color: #F5F9FE;
+}

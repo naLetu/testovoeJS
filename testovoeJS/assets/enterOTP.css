@@ -1,14 +1,23 @@
 .code {
   display: flex;
-  gap: 16px;
+  gap: 12px;
   margin-bottom: 56px;
 }
 
 .boxCode {
-  width: 56px;
-  height: 70px;
+  width: 55px !important;
+  height: 70px !important;
   background-color: #f5f9fe;
-  border-radius: 12px;
+  border-radius: 12px !important;
+  text-align: center;
+  align-items: center;
+  font-size: 32px;
+  line-height: 70px;
+  padding: 0  !important;
+}
+
+.boxCode:focus {
+  outline: 1px solid #3461fd;
 }
 
 .enterOTPPage .textWithHeader {

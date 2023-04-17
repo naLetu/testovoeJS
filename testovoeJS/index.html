@@ -27,22 +27,27 @@
         </p>
         <form action="" class="signUpForm">
           <label for="userName">
-            <input id="userName" type="text" placeholder="Name" />
+            <input id="userName" type="text" placeholder="Name" class="SignUpInput"/>
           </label>
           <label for="emailOrPhone">
             <input
               id="emailOrPhone"
               type="text"
               placeholder="Email/Phone Number"
+              class="SignUpInput"
             />
           </label>
-          <label for="passwordField">
-            <input id="passwordField" type="password" placeholder="Password" />
-            <a href="#" class="passwordControl"></a>
+          <label class="passwordInput" for="passwordField">
+            <input
+              id="passwordField"
+              type="password"
+              placeholder="Password"
+              class="showHidePassword SignUpInput"
+            /><a href="#" class="passwordControl"></a>
           </label>
           <div class="agreement">
-            <label>
-              <input class="agreementFlag" type="checkbox" />
+            <label for="checkbox">
+              <input class="agreementFlag" type="checkbox" id="checkboxInput" />
               <p class="agree">
                 I’m agree to
                 <a src="#">The Tarms of Service</a> and
@@ -54,7 +59,7 @@
 
         <button class="CreateAccountBtn">Creat Account</button>
         <div class="textUnderButton">
-          <p>Do you have account? <a onclick="showSignIn()">Sign In</a></p>
+          <p>Do you have account? <a class="signInBtn">Sign In</a></p>
         </div>
       </div>
 
@@ -71,31 +76,31 @@
         <form class="signInForm" action="">
           <label for="emailField">
             <input
+              class="emailSignIn signInInput"
               id="emailField"
               type="text"
               placeholder="Email/Phone Number"
             />
           </label>
-          <label for="passwordField">
+          <label class="passwordInput" for="passwordField">
             <input
               id="passwordField"
               type="password"
               placeholder="Password"
-              class="signInPassword"
-            />
-            <a href="#" class="passwordControl"></a>
+              class="signInPassword showHidePassword signInInput"
+            /><a href="#" class="passwordControl"></a>
           </label>
           <a class="forgetPasswordLink" src="#">Forget Password?</a>
         </form>
 
         <button class="logInBtn">Log In</button>
         <p class="textUnderButton">
-          Don’t have account? <a onclick="showSignUp()">Sign Up</a>
+          Don’t have account? <a class="signUpBtn">Sign Up</a>
         </p>
       </div>
 
       <!-- страница восстановления пароля -->
-      <div class="forgetPassword" style="display: none">
+      <div class="pageForgetPassword" style="display: none">
         <div class="arrowToBack">
           <a><img src="/images/arrToBack.svg" alt="" /></a>
         </div>
@@ -112,19 +117,24 @@
           It was popularised in the 1960s with the release of Letraset
           sheetscontaining Lorem Ipsum.
         </p>
-        <input type="text" placeholder="Email I’D/ Mobile Number" />
-        <button>Continue</button>
+        <input
+          type="text"
+          placeholder="Email I’D/ Mobile Number"
+          id="forgetEmail"
+          class="forgetPasswordInput"
+        />
+        <button class="continueBtn">Continue</button>
       </div>
 
       <!-- страница с воодом кода -->
 
       <div class="enterOTPPage" style="display: none">
-        <div class="arrowToBack">
+        <div class="arrowToBack arrowToBackOTP">
           <a><img src="/images/arrToBack.svg" alt="" /></a>
         </div>
         <div class="sliderButton">
           <div class="forgetPage"></div>
-          <div class="enterPage"></div>
+          <div class="enterPage enterPageReplaceColor"></div>
           <div class="resetPage"></div>
         </div>
         <div class="logoForgetPassword">
@@ -136,28 +146,29 @@
           Email/Phone number
         </p>
         <div class="code">
-          <div class="boxCode numOne"></div>
-          <div class="boxCode numTwo"></div>
-          <div class="boxCode numThree"></div>
-          <div class="boxCode numFour"></div>
-          <div class="boxCode numFive"></div>
+          <input type="number" class="boxCode numOne" contenteditable="true" maxlength ='1'></input>
+          <input type="number" class="boxCode numTwo" contenteditable="true" maxlength ='1'></input>
+          <input type="number" class="boxCode numThree" contenteditable="true" maxlength ='1'></input>
+          <input type="number" class="boxCode numFour" contenteditable="true" maxlength ='1'></input>
+          <input type="number" class="boxCode numFive" contenteditable="true" maxlength ='1'></input>
         </div>
-        <button>Reset Password</button>
+        <button class="ResetPasswordBtn">Reset Password</button>
         <div class="textUnderButton">
-          <p>Didn’t get OTP? <a>Resend OTP</a></p>
+          <p>Didn’t get OTP? <a class="resendOTP">Resend OTP</a></p>
         </div>
       </div>
 
       <!-- страница замены пароля -->
 
-      <div class="resetPassword" style="display: none">
-        <div class="arrowToBack">
+      <div class="resetPasswordPage" style="display: none">
+        <div class="errorBlock" style="display: none;">Wrong password</div>
+        <div class="arrowToBack arrowToBackReset">
           <a><img src="/images/arrToBack.svg" alt="" /></a>
         </div>
         <div class="sliderButton">
           <div class="forgetPage"></div>
           <div class="enterPage"></div>
-          <div class="resetPage"></div>
+          <div class="resetPage resetPageReplaceColor"></div>
         </div>
         <div class="logoReset">
           <img src="/images/resetLogo.svg" alt="logo reset" />
@@ -168,27 +179,26 @@
           sheetscontaining Lorem Ipsum.
         </p>
         <form class="resetForm" action="">
-          <label for="passwordField">
+          <label class="passwordInput" for="passwordField">
             <input
               id="passwordField"
               type="password"
               placeholder="New Password"
+              class="showHidePassword resetPasswordFirst resetInput"
             />
             <a href="#" class="passwordControl"></a>
           </label>
-          <label for="passwordField">
+          <label class="passwordInput" for="passwordField">
             <input
               id="passwordField"
               type="password"
               placeholder="Repeat Password"
-              class="signInPassword"
+              class="resetInput showHidePassword resetPasswordSecond"
             />
             <a href="#" class="passwordControl"></a>
           </label>
         </form>
-        <button>
-          <img class="loadBtn" src="/images/loadBtn.svg" />Submitting...
-        </button>
+        <button class="resetPasswordBtn">Reset Password</button>
       </div>
 
       <!-- финалОчка -->

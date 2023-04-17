@@ -59,24 +59,6 @@ input[type="checkBox"] {
   background-color: #f5f9fe;
 }
 
-/* input[type="checkBox"]::before {
-  content: "";
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  background-color: white;
-  border: 2px solid blue;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%) rotate(45deg);
-  visibility: hidden;
-}
-
-input[type="checkBox"]:checked::before {
-  visibility: visible;
-} */
-
 .agree {
   width: 300px;
   max-height: 45px;
@@ -89,10 +71,57 @@ input[type="checkBox"]:checked::before {
   color: #3b4054;
   margin-left: 16px;
 }
+.passwordInput {
+  position: relative;
+}
 
 .passwordControl {
-  background-image: url("/images/passwordIcon.svg");
-  background-repeat: no-repeat;
   position: absolute;
+  width: 25px;
+  height: 20px;
+  background: url("/images/passwordIcon.svg") 0 0 no-repeat;
   cursor: pointer;
+  top: 0;
+  left: 300px;
+}
+
+.passwordControl:nth-child(1) {
+  background: url("/images/passwordIconOn.svg") 0 0 no-repeat;
+}
+
+input:focus {
+  outline: 1px solid #3461fd;
+}
+
+input[type="checkBox"]:focus {
+  outline: none;
+}
+
+input[type="checkBox"]::before {
+  content: "";
+  display: inline-block;
+  width: 13px;
+  height: 13px;
+  background-color: white;
+  border: 2px solid blue;
+  position: absolute;
+  top: 17%;
+  left: 14%;
+  visibility: hidden;
+}
+
+input[type="checkBox"]:checked::before {
+  visibility: visible;
+}
+
+#emailOrPhone {
+  background-color: #f5f9fe;
+}
+
+#passwordField {
+  background-color: #f5f9fe;
+}
+
+.SignUpInput{
+  background-color: #f5f9fe;
 }
