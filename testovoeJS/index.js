@@ -11,22 +11,30 @@ const resetPasswordPage = document.querySelector(".resetPasswordPage");
 const arrowToBackOTP = document.querySelector(".arrowToBackOTP");
 const arrowToBackReset = document.querySelector(".arrowToBackReset");
 
+const hide = (el) => {
+  el.style.display = "none";
+};
+const show = (el) => {
+  el.style.display = "block";
+};
+
+const setElementHasError = (el, hasError) => {};
 // переходы с страницы на страницу
 signInBtn.addEventListener("click", () => {
-  pageSignUp.style.display = "none";
-  pageSignIn.style.display = "block";
+  hide(pageSignUp);
+  show(pageSignIn);
 });
 
 signUpBtn.addEventListener("click", () => {
-  pageSignUp.style.display = "block";
-  pageSignIn.style.display = "none";
+  show(pageSignUp);
+  hide(pageSignIn);
 });
 
 const forgetPage = document.querySelector(".forgetPage");
 forgetPasswordLink.addEventListener("click", () => {
-  pageSignIn.style.display = "none";
-  pageForgetPassword.style.display = "block";
-  if (pageForgetPassword.style.display === "block") {
+  hide(pageSignIn);
+  show(pageForgetPassword);
+  if (show(pageForgetPassword)) {
     forgetPage.style.backgroundColor = "#3461FD";
   } else {
     forgetPage.style.backgroundColor = "#D6DFFF";
@@ -35,45 +43,44 @@ forgetPasswordLink.addEventListener("click", () => {
 
 // КЛИКАБЕЛЬНЫЕ СТРЕЛКИ
 arrowToBack.addEventListener("click", () => {
-  pageForgetPassword.style.display = "none";
-  pageSignIn.style.display = "block";
+  hide(pageForgetPassword);
+  show(pageSignIn);
 });
 
 arrowToBackOTP.addEventListener("click", () => {
-  enterOTPPage.style.display = "none";
-  pageSignIn.style.display = "block";
+  hide(enterOTPPage);
+  show(pageSignIn);
 });
 
 arrowToBackReset.addEventListener("click", () => {
-  resetPasswordPage.style.display = "none";
-  pageSignIn.style.display = "block";
+  hide(resetPasswordPage);
+  show(pageSignIn);
 });
 
 // СОХРАНЕНИЕ ДАННЫХ ПО КНОПКЕ create account
+const createAccountBtn = document.querySelector(".createAccountBtn");
 
-const CreateAccountBtn = document.querySelector(".CreateAccountBtn");
-
-CreateAccountBtn.addEventListener("click", function () {
+createAccountBtn.addEventListener("click", function () {
   const userName = document.getElementById("userName").value.trim();
   const email = document.getElementById("emailOrPhone").value.trim();
   const password = document.getElementById("passwordField").value.trim();
   const checkbox = document.getElementById("checkboxInput");
   const emailField = document.getElementById("emailOrPhone");
   const passwordField = document.getElementById("passwordField");
-  const SignUpInput = document.querySelectorAll(".SignUpInput");
+  const signUpInput = document.querySelectorAll(".signUpInput");
 
   if (userName === "" || email === "" || password === "") {
-    SignUpInput.forEach((item) => {
+    signUpInput.forEach((item) => {
       item.style.backgroundColor = "#EB5757";
     });
     return;
   } else {
-    SignUpInput.forEach((item) => {
+    signUpInput.forEach((item) => {
       item.style.backgroundColor = "#F5F9FE";
     });
   }
 
-  const emailPattern = /[a-z][0-9]{3,15}@[a-z]{3,10}\.[a-z]{2,4}/;
+  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   if (!emailPattern.test(email)) {
     emailField.style.backgroundColor = "#EB5757";
     return;
@@ -81,7 +88,7 @@ CreateAccountBtn.addEventListener("click", function () {
     emailField.style.backgroundColor = "#F5F9FE";
   }
 
-  const passwordPattern = /[0-9a-zA-Z@#$%^&*]{6,16}/;
+  const passwordPattern = /[0-9a-zA-Z@#$%^&*]{8,16}/;
   if (!passwordPattern.test(password)) {
     passwordField.style.backgroundColor = "#EB5757";
     return;
@@ -94,27 +101,27 @@ CreateAccountBtn.addEventListener("click", function () {
   } else {
   }
 
-  const userData = {
+  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
+  const dubicate = savedUsers.some((data) => {
+    return data.email === email;
+  });
+  if (dubicate) {
+    // добавить красный фон поля емайл
+    return false;
+  }
+  const newUser = {
     userName: userName,
     email: email,
     password: password,
   };
-  localStorage.setItem("userData", JSON.stringify(userData));
+  savedUsers.push(newUser);
+  localStorage.setItem("userData", JSON.stringify(savedUsers));
 
-  const savedData = localStorage.getItem("userData");
-  if (savedData.email === email) {
-    emailField.style.backgroundColor = "#EB5757";
-    return;
-  } else {
-    localStorage.setItem("userData", JSON.stringify(userData));
-  }
-
-  pageSignUp.style.display = "none";
-  pageSignIn.style.display = "block";
+  hide(pageSignUp);
+  show(pageSignIn);
 });
 
 // СТРАНИЦА АВТОРИЗАЦИИ
-
 const logInBtn = document.querySelector(".logInBtn");
 logInBtn.addEventListener("click", function () {
   const email = document.querySelector(".emailSignIn").value;
@@ -132,37 +139,50 @@ logInBtn.addEventListener("click", function () {
     });
   }
 
-  const emailPattern = /[a-z][0-9]{3,15}@[a-z]{3,10}\.[a-z]{2,4}/;
+  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
   if (!emailPattern.test(email)) {
   }
 
-  if (userData.email === email && userData.password === password) {
-    pageSignIn.style.display = "none";
-    success.style.display = "block";
-    return;
+  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
+  const findUser = savedUsers.find((data) => {
+    return data.email === email;
+  });
+
+  if (!findUser) {
+    alert("dasdsa");
+    return false;
   }
 
-  if (userData.email !== email) {
-    signInInput.forEach((item) => {
-      item.style.backgroundColor = "#EB5757";
-    });
-    return;
-  } else {
-    signInInput.forEach((item) => {
-      item.style.backgroundColor = "#F5F9FE";
-    });
-  }
+  localStorage.setItem("curUser", JSON.stringify(findUser));
+  hide(pageSignIn);
+  show(success);
+  // if (userData.email === email && userData.password === password) {
+  //   hide(pageSignIn);
+  //   show(success);
+  //   return;
+  // }
 
-  if (userData.password !== password) {
-    signInInput.forEach((item) => {
-      item.style.backgroundColor = "#EB5757";
-    });
-    return;
-  } else {
-    signInInput.forEach((item) => {
-      item.style.backgroundColor = "#F5F9FE";
-    });
-  }
+  // if (userData.email !== email) {
+  //   signInInput.forEach((item) => {
+  //     item.style.backgroundColor = "#EB5757";
+  //   });
+  //   return;
+  // } else {
+  //   signInInput.forEach((item) => {
+  //     item.style.backgroundColor = "#F5F9FE";
+  //   });
+  // }
+
+  // if (userData.password !== password) {
+  //   signInInput.forEach((item) => {
+  //     item.style.backgroundColor = "#EB5757";
+  //   });
+  //   return;
+  // } else {
+  //   signInInput.forEach((item) => {
+  //     item.style.backgroundColor = "#F5F9FE";
+  //   });
+  // }
 });
 
 // СКРЫТЬ/ПОКАЗАТЬ ПАРОЛЬ
@@ -191,11 +211,14 @@ passIc.forEach((item, index) => {
 const continueBtn = document.querySelector(".continueBtn");
 const enterPage = document.querySelector(".enterPage");
 const enterPageReplaceColor = document.querySelector(".enterPageReplaceColor");
+
+let foundEmail = "";
+
 continueBtn.addEventListener("click", function () {
   const email = document.getElementById("forgetEmail").value.trim();
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const forgetPasswordInput = document.querySelector(".forgetPasswordInput");
-  const emailPattern = /[a-z][0-9]{3,15}@[a-z]{3,10}\.[a-z]{2,4}/;
+  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 
   if (email === "") {
     forgetPasswordInput.style.backgroundColor = "#EB5757";
@@ -211,12 +234,16 @@ continueBtn.addEventListener("click", function () {
     forgetPasswordInput.style.backgroundColor = "#F5F9FE";
   }
 
-  if (userData.email === email) {
-    pageForgetPassword.style.display = "none";
-    enterOTPPage.style.display = "block";
+  const savedEmail = savedUsers.find((user) => user.email === email && user);
+
+  if (email === savedEmail.email) {
+    hide(pageForgetPassword);
+    show(enterOTPPage);
+  } else {
+    return;
   }
 
-  if (enterOTPPage.style.display === "block") {
+  if (show(enterOTPPage)) {
     enterPageReplaceColor.style.backgroundColor = "#3461FD";
     forgetPage.style.backgroundColor = "#D6DFFF";
   }
@@ -228,6 +255,8 @@ continueBtn.addEventListener("click", function () {
     .then((data) => {
       localStorage.setItem("code", data);
     });
+
+  foundEmail = savedEmail;
 });
 
 // ВВОД ЦИФР В БЛОКИ
@@ -246,7 +275,7 @@ boxCode.forEach((block, index) => {
   });
 });
 
-const ResetPasswordBtn = document.querySelector(".ResetPasswordBtn");
+const validateCodeBtn = document.querySelector(".validateCodeBtn");
 const resetPageReplaceColor = document.querySelector(".resetPageReplaceColor");
 const boxValue = [];
 const getRandomCode = () => {
@@ -277,20 +306,20 @@ const resetFunction = () => {
   };
 
   if (randomCode === boxValue.join("")) {
-    enterOTPPage.style.display = "none";
-    resetPasswordPage.style.display = "block";
+    hide(enterOTPPage);
+    show(resetPasswordPage);
   } else {
     clearField();
     return;
   }
 
-  if (resetPasswordPage.style.display === "block") {
+  if (show(resetPasswordPage)) {
     resetPageReplaceColor.style.backgroundColor = "#3461FD";
   }
 };
 // доделать эту ебанину
 
-ResetPasswordBtn.addEventListener("click", resetFunction);
+validateCodeBtn.addEventListener("click", resetFunction);
 
 const resendOTP = document.querySelector(".resendOTP");
 resendOTP.addEventListener("click", () => {
@@ -305,9 +334,21 @@ resendOTP.addEventListener("click", () => {
 });
 
 // ЗАМЕНА ПАРОЛЯ
+// const inputReset = document.querySelector(".reset");
+// inputReset.addEventListener("keydown", function (e) {
+//   const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
+//   const newPassword = e.target.value;
+//   const findUserPassword = savedUsers.map((user) => {
+//     if (user.email === foundEmail) {
+//       return { ...user, password: newPassword };
+//     }
+//   });
+//   localStorage.setItem("userData", findUserPassword);
+// });
 
 const resetPasswordBtn = document.querySelector(".resetPasswordBtn");
-resetPasswordBtn.addEventListener("click", function () {
+
+resetPasswordBtn.addEventListener("click", function (e) {
   const resetPasswordFirst = document
     .querySelector(".resetPasswordFirst")
     .value.trim();
@@ -315,10 +356,27 @@ resetPasswordBtn.addEventListener("click", function () {
     .querySelector(".resetPasswordSecond")
     .value.trim();
   const resetInput = document.querySelectorAll(".resetInput");
-  const userData = JSON.parse(localStorage.getItem("userData"));
+  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const errorBlock = document.querySelector(".errorBlock");
   const resetPasswordF = document.querySelector(".resetPasswordFirst");
   const resetPasswordS = document.querySelector(".resetPasswordSecond");
+
+  // const newPassword = e.target.value;
+  // const findUserPassword = savedUsers.map((user) => {
+  //   if (user.email === foundEmail) {
+  //     return { ...user, password: newPassword };
+  //   }
+  // });
+  //   return (
+  //     data.password === resetPasswordFirst ||
+  //     data.password === resetPasswordSecond
+  //   );
+  // });
+
+  // localStorage.setItem("userData", findUserPassword);
+  const userIndex = savedUsers.findIndex((data) => {
+    return data.email === foundEmail;
+  });
   if (resetPasswordFirst === "" || resetPasswordSecond === "") {
     resetInput.forEach((item) => {
       item.style.backgroundColor = "#EB5757";
@@ -329,26 +387,42 @@ resetPasswordBtn.addEventListener("click", function () {
     resetPasswordS.style.backgroundColor = "#F5F9FE";
   }
 
-  if (
-    resetPasswordFirst !== resetPasswordSecond ||
-    userData.password === resetPasswordFirst
-  ) {
+  if (savedUsers[userIndex].password === resetPasswordFirst) {
     resetPasswordF.style.backgroundColor = "#EB5757";
-    errorBlock.style.display = "block";
+    show(errorBlock);
     return;
   } else {
     resetPasswordF.style.backgroundColor = "#F5F9FE";
     resetPasswordS.style.backgroundColor = "#F5F9FE";
-    errorBlock.style.display = "none";
-    userData.password = resetPasswordFirst;
-    localStorage.setItem("userData", JSON.stringify(userData));
+    hide(errorBlock);
   }
 
-  resetPasswordPage.style.display = "none";
-  pageSignIn.style.display = "block";
+  if (userIndex) {
+    savedUsers[userIndex].password = newPassword;
+    localStorage.setItem("userData", JSON.stringify(savedUsers));
+    hide(resetPasswordPage);
+    show(pageSignIn);
+  }
+  // if (
+  //   resetPasswordFirst !== resetPasswordSecond ||
+  //   savedUsers.password === resetPasswordFirst
+  // ) {
+  //   resetPasswordF.style.backgroundColor = "#EB5757";
+  //   show(errorBlock);
+  //   return;
+  // } else {
+  //   resetPasswordF.style.backgroundColor = "#F5F9FE";
+  //   resetPasswordS.style.backgroundColor = "#F5F9FE";
+  //   hide(errorBlock);
+  //   savedUsers.password = resetPasswordFirst;
+  //   localStorage.setItem("userData", JSON.stringify(userData));
+  // }
+
+  // hide(resetPasswordPage);
+  // show(pageSignIn);
 });
 
 success.addEventListener("click", () => {
-  success.style.display = "none";
-  pageSignUp.style.display = "block";
+  hide(success);
+  show(pageSignUp);
 });
