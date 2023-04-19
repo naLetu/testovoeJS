@@ -14,11 +14,33 @@ const arrowToBackReset = document.querySelector(".arrowToBackReset");
 const hide = (el) => {
   el.style.display = "none";
 };
+
 const show = (el) => {
   el.style.display = "block";
 };
 
-const setElementHasError = (el, hasError) => {};
+const clearField = (item) => {
+  item.forEach((field) => {
+    field.value = "";
+  });
+};
+
+const setElementHasError = (el, hasError) => {
+  if (hasError) {
+    el.classList.add("error");
+    return;
+  } else {
+    el.classList.remove("error");
+  }
+};
+
+const sliderBlockColor = (el, switched) => {
+  if (switched.style.display === "block") {
+    el.classList.add("sliderBlockColor");
+  } else {
+    el.classList.remove("sliderBlockColor");
+  }
+};
 // переходы с страницы на страницу
 signInBtn.addEventListener("click", () => {
   hide(pageSignUp);
@@ -26,6 +48,8 @@ signInBtn.addEventListener("click", () => {
 });
 
 signUpBtn.addEventListener("click", () => {
+  const signUpInput = document.querySelectorAll(".signUpInput");
+  clearField(signUpInput);
   show(pageSignUp);
   hide(pageSignIn);
 });
@@ -34,25 +58,27 @@ const forgetPage = document.querySelector(".forgetPage");
 forgetPasswordLink.addEventListener("click", () => {
   hide(pageSignIn);
   show(pageForgetPassword);
-  if (show(pageForgetPassword)) {
-    forgetPage.style.backgroundColor = "#3461FD";
-  } else {
-    forgetPage.style.backgroundColor = "#D6DFFF";
-  }
+  sliderBlockColor(forgetPage, pageForgetPassword);
 });
 
 // КЛИКАБЕЛЬНЫЕ СТРЕЛКИ
 arrowToBack.addEventListener("click", () => {
+  const signInInput = document.querySelectorAll(".signInInput");
+  clearField(signInInput);
   hide(pageForgetPassword);
   show(pageSignIn);
 });
 
 arrowToBackOTP.addEventListener("click", () => {
+  const signInInput = document.querySelectorAll(".signInInput");
+  clearField(signInInput);
   hide(enterOTPPage);
   show(pageSignIn);
 });
 
 arrowToBackReset.addEventListener("click", () => {
+  const signInInput = document.querySelectorAll(".signInInput");
+  clearField(signInInput);
   hide(resetPasswordPage);
   show(pageSignIn);
 });
@@ -65,35 +91,35 @@ createAccountBtn.addEventListener("click", function () {
   const email = document.getElementById("emailOrPhone").value.trim();
   const password = document.getElementById("passwordField").value.trim();
   const checkbox = document.getElementById("checkboxInput");
+  const signUpInput = document.querySelectorAll(".signUpInput");
   const emailField = document.getElementById("emailOrPhone");
   const passwordField = document.getElementById("passwordField");
-  const signUpInput = document.querySelectorAll(".signUpInput");
 
   if (userName === "" || email === "" || password === "") {
     signUpInput.forEach((item) => {
-      item.style.backgroundColor = "#EB5757";
+      item.classList.add("error");
     });
     return;
   } else {
     signUpInput.forEach((item) => {
-      item.style.backgroundColor = "#F5F9FE";
+      item.classList.remove("error");
     });
   }
 
-  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailPattern.test(email)) {
-    emailField.style.backgroundColor = "#EB5757";
+    setElementHasError(emailField, true);
     return;
   } else {
-    emailField.style.backgroundColor = "#F5F9FE";
+    setElementHasError(emailField, false);
   }
 
   const passwordPattern = /[0-9a-zA-Z@#$%^&*]{8,16}/;
   if (!passwordPattern.test(password)) {
-    passwordField.style.backgroundColor = "#EB5757";
+    setElementHasError(passwordField, true);
     return;
   } else {
-    passwordField.style.backgroundColor = "#F5F9FE";
+    setElementHasError(passwordField, false);
   }
 
   if (!checkbox.checked) {
@@ -106,7 +132,7 @@ createAccountBtn.addEventListener("click", function () {
     return data.email === email;
   });
   if (dubicate) {
-    // добавить красный фон поля емайл
+    setElementHasError(emailField, true);
     return false;
   }
   const newUser = {
@@ -123,70 +149,51 @@ createAccountBtn.addEventListener("click", function () {
 
 // СТРАНИЦА АВТОРИЗАЦИИ
 const logInBtn = document.querySelector(".logInBtn");
+
 logInBtn.addEventListener("click", function () {
   const email = document.querySelector(".emailSignIn").value;
   const password = document.querySelector(".signInPassword").value;
-  const userData = JSON.parse(localStorage.getItem("userData"));
   const signInInput = document.querySelectorAll(".signInInput");
+  const emailField = document.querySelector(".emailSignIn");
+  const passwordField = document.querySelector(".signInPassword");
+  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
 
   if (email === "" || password === "") {
     signInInput.forEach((item) => {
-      item.style.backgroundColor = "#EB5757";
+      item.classList.add("error");
     });
   } else {
     signInInput.forEach((item) => {
-      item.style.backgroundColor = "#F5F9FE";
+      item.classList.remove("error");
     });
   }
 
-  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
   if (!emailPattern.test(email)) {
+    setElementHasError(emailField, true);
+  } else {
+    setElementHasError(emailField, false);
   }
 
-  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
-  const findUser = savedUsers.find((data) => {
-    return data.email === email;
+  const findUser = savedUsers.find((user) => {
+    return user.email === email && (user.password === password || !user.password);
   });
 
   if (!findUser) {
-    alert("dasdsa");
-    return false;
+    setElementHasError(emailField, true);
+    setElementHasError(passwordField, true);
+    return;
+  } else {
+    setElementHasError(emailField, false);
   }
 
   localStorage.setItem("curUser", JSON.stringify(findUser));
+  clearField(signInInput);
   hide(pageSignIn);
   show(success);
-  // if (userData.email === email && userData.password === password) {
-  //   hide(pageSignIn);
-  //   show(success);
-  //   return;
-  // }
-
-  // if (userData.email !== email) {
-  //   signInInput.forEach((item) => {
-  //     item.style.backgroundColor = "#EB5757";
-  //   });
-  //   return;
-  // } else {
-  //   signInInput.forEach((item) => {
-  //     item.style.backgroundColor = "#F5F9FE";
-  //   });
-  // }
-
-  // if (userData.password !== password) {
-  //   signInInput.forEach((item) => {
-  //     item.style.backgroundColor = "#EB5757";
-  //   });
-  //   return;
-  // } else {
-  //   signInInput.forEach((item) => {
-  //     item.style.backgroundColor = "#F5F9FE";
-  //   });
-  // }
 });
 
 // СКРЫТЬ/ПОКАЗАТЬ ПАРОЛЬ
-
 const passInp = document.querySelectorAll(".showHidePassword");
 const passIc = document.querySelectorAll(".passwordControl");
 
@@ -211,27 +218,27 @@ passIc.forEach((item, index) => {
 const continueBtn = document.querySelector(".continueBtn");
 const enterPage = document.querySelector(".enterPage");
 const enterPageReplaceColor = document.querySelector(".enterPageReplaceColor");
-
+// ПЕРЕМЕННАЯ ДЛЯ СОХРАНЕНИЯ EMAIL
 let foundEmail = "";
 
 continueBtn.addEventListener("click", function () {
   const email = document.getElementById("forgetEmail").value.trim();
   const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const forgetPasswordInput = document.querySelector(".forgetPasswordInput");
-  const emailPattern = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
+  const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
   if (email === "") {
-    forgetPasswordInput.style.backgroundColor = "#EB5757";
+    setElementHasError(forgetPasswordInput, true);
     return;
   } else {
-    forgetPasswordInput.style.backgroundColor = "#F5F9FE";
+    setElementHasError(forgetPasswordInput, false);
   }
 
   if (!emailPattern.test(email)) {
-    forgetPasswordInput.style.backgroundColor = "#EB5757";
+    setElementHasError(forgetPasswordInput, true);
     return;
   } else {
-    forgetPasswordInput.style.backgroundColor = "#F5F9FE";
+    setElementHasError(forgetPasswordInput, false);
   }
 
   const savedEmail = savedUsers.find((user) => user.email === email && user);
@@ -243,10 +250,6 @@ continueBtn.addEventListener("click", function () {
     return;
   }
 
-  if (show(enterOTPPage)) {
-    enterPageReplaceColor.style.backgroundColor = "#3461FD";
-    forgetPage.style.backgroundColor = "#D6DFFF";
-  }
   // ЗАПРОС ДЛЯ ПОЛУЧЕНИЯ ПАРОЛЯ
   fetch(
     "https://www.randomnumberapi.com/api/v1.0/random?min=10000&max=99999&count=1"
@@ -256,7 +259,9 @@ continueBtn.addEventListener("click", function () {
       localStorage.setItem("code", data);
     });
 
+  forgetPasswordInput.value = "";
   foundEmail = savedEmail;
+  sliderBlockColor(enterPageReplaceColor, enterOTPPage);
 });
 
 // ВВОД ЦИФР В БЛОКИ
@@ -277,6 +282,7 @@ boxCode.forEach((block, index) => {
 
 const validateCodeBtn = document.querySelector(".validateCodeBtn");
 const resetPageReplaceColor = document.querySelector(".resetPageReplaceColor");
+const resetPage = document.querySelector(".resetPage");
 const boxValue = [];
 const getRandomCode = () => {
   return localStorage.getItem("code");
@@ -287,10 +293,10 @@ const resetFunction = () => {
   boxCode.forEach((item) => {
     const value = item.value;
     if (item === "") {
-      item.style.backgroundColor = "#EB5757";
+      item.classList.add("error");
       return;
     } else {
-      item.style.backgroundColor = "#F5F9FE";
+      item.classList.remove("error");
     }
 
     if (!isNaN(value) && value.length === 1) {
@@ -298,26 +304,17 @@ const resetFunction = () => {
     }
   });
 
-  // clear field if false
-  const clearField = () => {
-    boxCode.forEach((field) => {
-      field.value = "";
-    });
-  };
-
   if (randomCode === boxValue.join("")) {
     hide(enterOTPPage);
     show(resetPasswordPage);
+    clearField(boxCode);
   } else {
-    clearField();
+    clearField(boxCode);
     return;
   }
 
-  if (show(resetPasswordPage)) {
-    resetPageReplaceColor.style.backgroundColor = "#3461FD";
-  }
+  sliderBlockColor(resetPageReplaceColor, resetPasswordPage);
 };
-// доделать эту ебанину
 
 validateCodeBtn.addEventListener("click", resetFunction);
 
@@ -330,25 +327,14 @@ resendOTP.addEventListener("click", () => {
     .then((data) => {
       localStorage.setItem("code", data);
     });
+  clearField(boxCode);
   boxValue.splice(0, boxValue.length);
 });
 
 // ЗАМЕНА ПАРОЛЯ
-// const inputReset = document.querySelector(".reset");
-// inputReset.addEventListener("keydown", function (e) {
-//   const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
-//   const newPassword = e.target.value;
-//   const findUserPassword = savedUsers.map((user) => {
-//     if (user.email === foundEmail) {
-//       return { ...user, password: newPassword };
-//     }
-//   });
-//   localStorage.setItem("userData", findUserPassword);
-// });
-
 const resetPasswordBtn = document.querySelector(".resetPasswordBtn");
 
-resetPasswordBtn.addEventListener("click", function (e) {
+resetPasswordBtn.addEventListener("click", function () {
   const resetPasswordFirst = document
     .querySelector(".resetPasswordFirst")
     .value.trim();
@@ -356,73 +342,58 @@ resetPasswordBtn.addEventListener("click", function (e) {
     .querySelector(".resetPasswordSecond")
     .value.trim();
   const resetInput = document.querySelectorAll(".resetInput");
-  const savedUsers = JSON.parse(localStorage.getItem("userData")) || [];
   const errorBlock = document.querySelector(".errorBlock");
   const resetPasswordF = document.querySelector(".resetPasswordFirst");
-  const resetPasswordS = document.querySelector(".resetPasswordSecond");
+  const passwordPattern = /[0-9a-zA-Z@#$%^&*]{8,16}/;
+  const savedUsers = JSON.parse(localStorage.getItem('userData')) || []
 
-  // const newPassword = e.target.value;
-  // const findUserPassword = savedUsers.map((user) => {
-  //   if (user.email === foundEmail) {
-  //     return { ...user, password: newPassword };
-  //   }
-  // });
-  //   return (
-  //     data.password === resetPasswordFirst ||
-  //     data.password === resetPasswordSecond
-  //   );
-  // });
-
-  // localStorage.setItem("userData", findUserPassword);
-  const userIndex = savedUsers.findIndex((data) => {
-    return data.email === foundEmail;
-  });
   if (resetPasswordFirst === "" || resetPasswordSecond === "") {
     resetInput.forEach((item) => {
-      item.style.backgroundColor = "#EB5757";
+      item.classList.add("error");
     });
     return;
   } else {
-    resetPasswordF.style.backgroundColor = "#F5F9FE";
-    resetPasswordS.style.backgroundColor = "#F5F9FE";
+    resetInput.forEach((item) => {
+      item.classList.remove("error");
+    });
   }
 
-  if (savedUsers[userIndex].password === resetPasswordFirst) {
-    resetPasswordF.style.backgroundColor = "#EB5757";
+  if (foundEmail.password === resetPasswordFirst) {
+    setElementHasError(resetPasswordF, true);
     show(errorBlock);
     return;
   } else {
-    resetPasswordF.style.backgroundColor = "#F5F9FE";
-    resetPasswordS.style.backgroundColor = "#F5F9FE";
+    resetInput.forEach((item) => {
+      item.classList.remove("error");
+    });
     hide(errorBlock);
   }
 
-  if (userIndex) {
-    savedUsers[userIndex].password = newPassword;
-    localStorage.setItem("userData", JSON.stringify(savedUsers));
+  if (
+    foundEmail.password !== resetPasswordFirst &&
+    passwordPattern.test(resetPasswordFirst)
+  ) {
+    foundEmail.password = resetPasswordFirst;
+    localStorage.setItem("userData", JSON.stringify(foundEmail));
     hide(resetPasswordPage);
     show(pageSignIn);
   }
-  // if (
-  //   resetPasswordFirst !== resetPasswordSecond ||
-  //   savedUsers.password === resetPasswordFirst
-  // ) {
-  //   resetPasswordF.style.backgroundColor = "#EB5757";
-  //   show(errorBlock);
-  //   return;
-  // } else {
-  //   resetPasswordF.style.backgroundColor = "#F5F9FE";
-  //   resetPasswordS.style.backgroundColor = "#F5F9FE";
-  //   hide(errorBlock);
-  //   savedUsers.password = resetPasswordFirst;
-  //   localStorage.setItem("userData", JSON.stringify(userData));
-  // }
 
-  // hide(resetPasswordPage);
-  // show(pageSignIn);
+  const userIndex = savedUsers.findIndex(user => user.email === foundEmail.email)
+  savedUsers[userIndex] = {
+    userName: foundEmail.userName,
+    email: foundEmail.email,
+    password: foundEmail.password
+  }
+  localStorage.setItem('userData', JSON.stringify(savedUsers))
+
+
+  clearField(resetInput);
 });
 
 success.addEventListener("click", () => {
+  const signUpInput = document.querySelectorAll(".signUpInput");
   hide(success);
   show(pageSignUp);
+  clearField(signUpInput);
 });

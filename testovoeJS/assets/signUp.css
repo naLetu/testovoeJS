@@ -114,14 +114,4 @@ input[type="checkBox"]:checked::before {
   visibility: visible;
 }
 
-#emailOrPhone {
-  background-color: #f5f9fe;
-}
 
-#passwordField {
-  background-color: #f5f9fe;
-}
-
-.SignUpInput{
-  background-color: #f5f9fe;
-}
